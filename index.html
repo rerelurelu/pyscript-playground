@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+    <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+    <py-env>
+      - numpy
+      - matplotlib
+      - scikit-learn
+      - pandas
+      - paths:
+        - ./modules/create_graph.py
+        - ./modules/create_irisdata.py
+    </py-env>
+    <title>PyScript Playground</title>
+  </head>
+
+  <body>
+    <main class="py-5 grid gap-y-4 grid-cols-1 place-items-center">
+      <p id="title" class="text-center"></p>
+      <py-button id="graph-button" label="グラフを表示"></py-button>
+      <div id="graph-container"></div>
+      <py-button id="iris-button" label="Irisデータセットを分析"></py-button>
+      <div id="iris-container">
+        <p id="data-description"></p>
+        <div id="plot-area"></div>
+      </div>
+    </main>
+
+    <py-script output="title">
+import platform
+
+print('I love PyScript')
+print('Python version: {}'.format(platform.python_version()))
+    </py-script>
+    <py-script>
+from create_graph import create_graph
+
+graph_button = Element('graph-button')
+
+def display_graph(*ags, **kwgs):
+    fig = create_graph()
+    pyscript.write('graph-container', fig)
+
+graph_button.element.onclick = display_graph
+    </py-script>
+    <py-script>
+from create_irisdata import create_irisdata
+
+iris_button = Element('iris-button')
+
+def display_irisdata(*ags, **kwgs):
+    df, fig = create_irisdata()
+    pyscript.write('data-description', df.head())
+    pyscript.write('plot-area', fig)
+
+iris_button.element.onclick = display_irisdata
+    </py-script>
+
+  </body>
+
+</html>
